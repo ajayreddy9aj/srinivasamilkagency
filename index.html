@@ -1,104 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-head>
+<head>
   <meta charset="UTF-8">
-  <title>Milk Agency Sheet</title>
+  <title>Milk Agency Sheet — Master Prices + Paid→Auto Due</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 16px;
-      background: #f5f5f5;
-    }
+    body { font-family: Arial, sans-serif; padding: 16px; background: #f5f5f5; }
     h2 { margin-top: 0; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      font-size: 14px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: center;
-    }
-    th {
-      background: #f0f0f0;
-    }
-    th .priceHint {
-      display: block;
-      font-size: 11px;
-      color: #555;
-      margin-top: 2px;
-    }
-    td input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 3px;
-      font-size: 13px;
-    }
+    table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+    th { background: #f0f0f0; }
+    th .priceHint { display:block; font-size:11px; color:#555; margin-top:2px; }
+    td input { width: 100%; box-sizing: border-box; padding:3px; font-size:13px; }
     .nameCol input { width: 140px; }
     .mobileCol input { width: 120px; }
     .qtyInput { width: 55px; }
     .priceInput { width: 55px; }
-
-    /* Due column wider */
-    .dueHead {
-      min-width: 110px;
-    }
-    .dueCol input {
-      width: 110px;
-    }
-
-    .cellStack {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      align-items: center;
-    }
-    .cellStack span {
-      font-size: 11px;
-      color: #666;
-    }
-
-    .controls {
-      margin-bottom: 10px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .controls button {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .addBtn { background: #16a34a; color: #fff; }
-    .pdfBtn { background: #6b21a8; color: #fff; }
-    .editBtn { background: #0ea5e9; color: #fff; padding: 4px 8px; }
-    .saveBtn { background: #22c55e; color: #fff; padding: 4px 8px; }
-    .cancelBtn { background: #f59e0b; color: #fff; padding: 4px 8px; }
-    .deleteBtn { background: #ef4444; color: #fff; padding: 4px 8px; }
-    .sendBtn { background: #10b981; color: #fff; padding: 4px 8px; }
-
-    .totalBox {
-      background: #fff;
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    @media print {
-      .no-print { display:none !important; }
-      body { background:#fff; padding:0; }
-    }
+    .dueHead { min-width: 110px; }
+    .dueCol input { width: 110px; }
+    .cellStack { display:flex; flex-direction:column; gap:2px; align-items:center; }
+    .cellStack span { font-size:11px; color:#666; }
+    .controls { margin-bottom:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .controls button, .controls input { padding:6px 10px; border-radius:4px; font-size:14px; }
+    .addBtn { background:#16a34a; color:#fff; border:none; cursor:pointer; }
+    .pdfBtn { background:#6b21a8; color:#fff; border:none; cursor:pointer; }
+    .editBtn { background:#0ea5e9; color:#fff; border:none; cursor:pointer; padding:4px 8px; }
+    .saveBtn { background:#22c55e; color:#fff; border:none; cursor:pointer; padding:4px 8px; }
+    .cancelBtn { background:#f59e0b; color:#fff; border:none; cursor:pointer; padding:4px 8px; }
+    .deleteBtn { background:#ef4444; color:#fff; border:none; cursor:pointer; padding:4px 8px; }
+    .sendBtn { background:#10b981; color:#fff; border:none; cursor:pointer; padding:4px 8px; }
+    .totalBox { background:#fff; margin-top:14px; padding:12px; border-radius:6px; font-size:14px; line-height:1.4; }
+    .masterPrices { background:#fff; padding:8px; border-radius:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .masterPrices label { font-size:13px; color:#333; }
+    .masterPrices input { width:72px; padding:6px; border:1px solid #ccc; border-radius:4px; }
+    .no-print { }
+    @media print { .no-print { display:none !important; } body { background:#fff; padding:0; } }
   </style>
 </head>
-
 <body>
 
 <div class="no-print controls">
@@ -112,47 +50,39 @@ head>
   <button class="pdfBtn" id="pdfBtn">Save / Print PDF</button>
 </div>
 
+<!-- MASTER PRICES -->
+<div class="no-print masterPrices" style="margin-bottom:10px;">
+  <strong>Master Prices (Edit & Save)</strong>
+  <label>TM <input id="master_tm" type="number" step="0.01"></label>
+  <label>S Milk <input id="master_sMilk" type="number" step="0.01"></label>
+  <label>S Curd <input id="master_sCurd" type="number" step="0.01"></label>
+  <label>B Curd <input id="master_bCurd" type="number" step="0.01"></label>
+  <label>H500 <input id="master_h500" type="number" step="0.01"></label>
+  <label>FM <input id="master_fm" type="number" step="0.01"></label>
+  <label>FM1L <input id="master_fm1l" type="number" step="0.01"></label>
+  <label>SM1L <input id="master_sm1l" type="number" step="0.01"></label>
+
+  <button id="saveMaster" class="saveBtn">Save Master</button>
+  <button id="resetMaster" class="cancelBtn">Reset to Default</button>
+</div>
+
 <table id="sheet">
   <thead>
     <tr>
       <th>Name</th>
       <th>Mobile</th>
-      <th>
-        TM
-        <span class="priceHint">₹56/L</span>
-      </th>
-      <th>
-        S Milk
-        <span class="priceHint">₹45/L</span>
-      </th>
-      <th>
-        S Curd
-        <span class="priceHint">₹45/L</span>
-      </th>
-      <th>
-        B Curd
-        <span class="priceHint">₹68/L</span>
-      </th>
-      <th>
-        H500
-        <span class="priceHint">₹86/L</span>
-      </th>
-      <th>
-        FM
-        <span class="priceHint">₹77/L</span>
-      </th>
-      <th>
-        FM1L
-        <span class="priceHint">₹73/L</span>
-      </th>
-      <th>
-        SM1L
-        <span class="priceHint">₹66/L</span>
-      </th>
+      <th>TM <span class="priceHint" id="hint_tm">₹56/L</span></th>
+      <th>S Milk <span class="priceHint" id="hint_sMilk">₹45/L</span></th>
+      <th>S Curd <span class="priceHint" id="hint_sCurd">₹45/L</span></th>
+      <th>B Curd <span class="priceHint" id="hint_bCurd">₹68/L</span></th>
+      <th>H500 <span class="priceHint" id="hint_h500">₹86/L</span></th>
+      <th>FM <span class="priceHint" id="hint_fm">₹77/L</span></th>
+      <th>FM1L <span class="priceHint" id="hint_fm1l">₹73/L</span></th>
+      <th>SM1L <span class="priceHint" id="hint_sm1l">₹66/L</span></th>
       <th>Total Litres</th>
       <th>Total Amount</th>
-      <th>Paid</th>
-      <th class="dueHead">Due</th>
+      <th>Paid (EDIT)</th>
+      <th class="dueHead">Due (AUTO)</th>
       <th class="no-print">Send</th>
       <th class="no-print">Edit / Save</th>
       <th class="no-print">Delete</th>
@@ -176,7 +106,8 @@ head>
 </div>
 
 <script>
-  const BASE_PRICES = {
+  // DEFAULT MASTER PRICES (used if no saved master)
+  const DEFAULT_MASTER = {
     tm: 56,
     sMilk: 45,
     sCurd: 45,
@@ -187,14 +118,45 @@ head>
     sm1l: 66
   };
 
+  // load master from localStorage (persisted)
+  function loadMaster() {
+    const raw = localStorage.getItem("milkSheet_masterPrices");
+    if (!raw) return {...DEFAULT_MASTER};
+    try { return {...DEFAULT_MASTER, ...JSON.parse(raw)}; } catch(e) { return {...DEFAULT_MASTER}; }
+  }
+  function saveMaster(m) { localStorage.setItem("milkSheet_masterPrices", JSON.stringify(m)); }
+
+  let MASTER = loadMaster();
+
+  // expose hints + master inputs
+  function refreshMasterUI() {
+    document.getElementById("master_tm").value   = MASTER.tm;
+    document.getElementById("master_sMilk").value= MASTER.sMilk;
+    document.getElementById("master_sCurd").value= MASTER.sCurd;
+    document.getElementById("master_bCurd").value= MASTER.bCurd;
+    document.getElementById("master_h500").value = MASTER.h500;
+    document.getElementById("master_fm").value    = MASTER.fm;
+    document.getElementById("master_fm1l").value  = MASTER.fm1l;
+    document.getElementById("master_sm1l").value  = MASTER.sm1l;
+
+    document.getElementById("hint_tm").innerText   = `₹${MASTER.tm}/L`;
+    document.getElementById("hint_sMilk").innerText= `₹${MASTER.sMilk}/L`;
+    document.getElementById("hint_sCurd").innerText= `₹${MASTER.sCurd}/L`;
+    document.getElementById("hint_bCurd").innerText= `₹${MASTER.bCurd}/L`;
+    document.getElementById("hint_h500").innerText = `₹${MASTER.h500}/L`;
+    document.getElementById("hint_fm").innerText    = `₹${MASTER.fm}/L`;
+    document.getElementById("hint_fm1l").innerText  = `₹${MASTER.fm1l}/L`;
+    document.getElementById("hint_sm1l").innerText  = `₹${MASTER.sm1l}/L`;
+  }
+  refreshMasterUI();
+
+  // rows and date management
   let currentDateStr = null;
   let rows = [];
 
-  function storageKey(dateStr) {
-    return "milkSheet_" + dateStr;
-  }
+  function storageKey(dateStr) { return "milkSheet_" + dateStr; }
 
-  // amount & due logic: due is editable, paid auto = prevDue + amount − due
+  // compute totals: NOTE: paid is editable, due is computed automatically
   function computeRowTotals(row) {
     const tmL    = parseFloat(row.tmL)    || 0;
     const sMilkL = parseFloat(row.sMilkL) || 0;
@@ -205,17 +167,16 @@ head>
     const fm1lL  = parseFloat(row.fm1lL)  || 0;
     const sm1lL  = parseFloat(row.sm1lL)  || 0;
 
-    const tmP    = parseFloat(row.tmPrice)    || BASE_PRICES.tm;
-    const sMilkP = parseFloat(row.sMilkPrice) || BASE_PRICES.sMilk;
-    const sCurdP = parseFloat(row.sCurdPrice) || BASE_PRICES.sCurd;
-    const bCurdP = parseFloat(row.bCurdPrice) || BASE_PRICES.bCurd;
-    const h500P  = parseFloat(row.h500Price)  || BASE_PRICES.h500;
-    const fmP    = parseFloat(row.fmPrice)    || BASE_PRICES.fm;
-    const fm1lP  = parseFloat(row.fm1lPrice)  || BASE_PRICES.fm1l;
-    const sm1lP  = parseFloat(row.sm1lPrice)  || BASE_PRICES.sm1l;
+    const tmP    = parseFloat(row.tmPrice)    || MASTER.tm;
+    const sMilkP = parseFloat(row.sMilkPrice) || MASTER.sMilk;
+    const sCurdP = parseFloat(row.sCurdPrice) || MASTER.sCurd;
+    const bCurdP = parseFloat(row.bCurdPrice) || MASTER.bCurd;
+    const h500P  = parseFloat(row.h500Price)  || MASTER.h500;
+    const fmP    = parseFloat(row.fmPrice)    || MASTER.fm;
+    const fm1lP  = parseFloat(row.fm1lPrice)  || MASTER.fm1l;
+    const sm1lP  = parseFloat(row.sm1lPrice)  || MASTER.sm1l;
 
-    const totalLitres =
-      tmL + sMilkL + sCurdL + bCurdL + h500L + fmL + fm1lL + sm1lL;
+    const totalLitres = tmL + sMilkL + sCurdL + bCurdL + h500L + fmL + fm1lL + sm1lL;
 
     const amount =
       tmL    * tmP    +
@@ -228,19 +189,18 @@ head>
       sm1lL  * sm1lP;
 
     const prevDue = parseFloat(row.prevDue) || 0;
-    const rawDue  = (row.due === undefined ? "" : row.due);
+    // paid is editable by user now
+    const rawPaid = (row.paid === undefined ? "" : row.paid);
 
-    let due, paid;
-    if (rawDue === "" || rawDue === null) {
-      // if user didn't set due → assume everything is due, no payment
-      due = prevDue + amount;
+    let paid = 0;
+    if (rawPaid === "" || rawPaid === null) {
       paid = 0;
     } else {
-      due = parseFloat(rawDue) || 0;
-      paid = prevDue + amount - due;
+      paid = parseFloat(rawPaid) || 0;
     }
+    const due = prevDue + amount - paid;
 
-    return { totalLitres, amount, due, paid, prevDue };
+    return { totalLitres, amount, paid, due, prevDue };
   }
 
   function saveCurrentDate() {
@@ -261,7 +221,7 @@ head>
     render();
   }
 
-  // build new date from latest previous date, carrying previous due only
+  // build rows for new date from previous date — carry prevDue forward
   function buildFromPrevious(dateStr) {
     const prefix = "milkSheet_";
     const keys = Object.keys(localStorage).filter(k => k.startsWith(prefix));
@@ -283,24 +243,24 @@ head>
         name: r.name || "",
         mobile: r.mobile || "",
         tmL: "",
-        tmPrice: r.tmPrice || BASE_PRICES.tm,
+        tmPrice: r.tmPrice || "",     // keep empty so MASTER is used unless per-customer set
         sMilkL: "",
-        sMilkPrice: r.sMilkPrice || BASE_PRICES.sMilk,
+        sMilkPrice: r.sMilkPrice || "",
         sCurdL: "",
-        sCurdPrice: r.sCurdPrice || BASE_PRICES.sCurd,
+        sCurdPrice: r.sCurdPrice || "",
         bCurdL: "",
-        bCurdPrice: r.bCurdPrice || BASE_PRICES.bCurd,
+        bCurdPrice: r.bCurdPrice || "",
         h500L: "",
-        h500Price: r.h500Price || BASE_PRICES.h500,
+        h500Price: r.h500Price || "",
         fmL: "",
-        fmPrice: r.fmPrice || BASE_PRICES.fm,
+        fmPrice: r.fmPrice || "",
         fm1lL: "",
-        fm1lPrice: r.fm1lPrice || BASE_PRICES.fm1l,
+        fm1lPrice: r.fm1lPrice || "",
         sm1lL: "",
-        sm1lPrice: r.sm1lPrice || BASE_PRICES.sm1l,
-        paid: "",        // not used now, just kept for compatibility
+        sm1lPrice: r.sm1lPrice || "",
+        paid: "",        // user will enter paid for new date
         prevDue: totals.due,
-        due: "",         // user will set new due
+        due: "",         // computed automatically
         edit: false
       };
     });
@@ -311,23 +271,23 @@ head>
       name: "",
       mobile: "",
       tmL: "",
-      tmPrice: BASE_PRICES.tm,
+      tmPrice: "",
       sMilkL: "",
-      sMilkPrice: BASE_PRICES.sMilk,
+      sMilkPrice: "",
       sCurdL: "",
-      sCurdPrice: BASE_PRICES.sCurd,
+      sCurdPrice: "",
       bCurdL: "",
-      bCurdPrice: BASE_PRICES.bCurd,
+      bCurdPrice: "",
       h500L: "",
-      h500Price: BASE_PRICES.h500,
+      h500Price: "",
       fmL: "",
-      fmPrice: BASE_PRICES.fm,
+      fmPrice: "",
       fm1lL: "",
-      fm1lPrice: BASE_PRICES.fm1l,
+      fm1lPrice: "",
       sm1lL: "",
-      sm1lPrice: BASE_PRICES.sm1l,
+      sm1lPrice: "",
       paid: "",
-      prevDue: "",
+      prevDue: 0,
       due: "",
       edit: true
     });
@@ -381,7 +341,8 @@ head>
     r.sm1lL      = document.getElementById("sm1lL_" + i).value;
     r.sm1lPrice  = document.getElementById("sm1lP_" + i).value;
 
-    r.due = document.getElementById("due_" + i).value;
+    // Now capture Paid (user edits this) — Due will be auto-calculated
+    r.paid = document.getElementById("paid_" + i).value;
 
     r.edit = false;
     render();
@@ -398,9 +359,7 @@ head>
 
     // Clean mobile → digits only
     let mobile = (r.mobile || "").replace(/\D/g, "");
-    if (mobile.length === 10) {
-      mobile = "91" + mobile;
-    }
+    if (mobile.length === 10) mobile = "91" + mobile;
 
     let msg = `Milk Bill - ${currentDateStr}\n`;
     msg += `Name: ${r.name || ""}\n`;
@@ -409,20 +368,20 @@ head>
 
     function line(label, litres, price) {
       const L = parseFloat(litres) || 0;
-      const P = parseFloat(price);
+      const P = parseFloat(price) || 0;
       if (!L || !P) return "";
       const amt = L * P;
       return `• ${label}: ${L} L @ ₹${P} = ₹${amt}\n`;
     }
 
-    msg += line("TM",    r.tmL,    r.tmPrice || BASE_PRICES.tm);
-    msg += line("S Milk",r.sMilkL, r.sMilkPrice || BASE_PRICES.sMilk);
-    msg += line("S Curd",r.sCurdL, r.sCurdPrice || BASE_PRICES.sCurd);
-    msg += line("B Curd",r.bCurdL, r.bCurdPrice || BASE_PRICES.bCurd);
-    msg += line("H500",  r.h500L,  r.h500Price || BASE_PRICES.h500);
-    msg += line("FM",    r.fmL,    r.fmPrice || BASE_PRICES.fm);
-    msg += line("FM1L",  r.fm1lL,  r.fm1lPrice || BASE_PRICES.fm1l);
-    msg += line("SM1L",  r.sm1lL,  r.sm1lPrice || BASE_PRICES.sm1l);
+    msg += line("TM",    r.tmL,    r.tmPrice || MASTER.tm);
+    msg += line("S Milk",r.sMilkL, r.sMilkPrice || MASTER.sMilk);
+    msg += line("S Curd",r.sCurdL, r.sCurdPrice || MASTER.sCurd);
+    msg += line("B Curd",r.bCurdL, r.bCurdPrice || MASTER.bCurd);
+    msg += line("H500",  r.h500L,  r.h500Price || MASTER.h500);
+    msg += line("FM",    r.fmL,    r.fmPrice || MASTER.fm);
+    msg += line("FM1L",  r.fm1lL,  r.fm1lPrice || MASTER.fm1l);
+    msg += line("SM1L",  r.sm1lL,  r.sm1lPrice || MASTER.sm1l);
 
     msg += `\nTotal litres today: ${totalLitres} L\n`;
     msg += `Today's amount: ₹${amount.toFixed(0)}\n`;
@@ -464,14 +423,14 @@ head>
           <td>${r.name || ""}</td>
           <td>${r.mobile || ""}</td>
 
-          <td>${r.tmL    ? r.tmL    + " L @ ₹" + (r.tmPrice    || BASE_PRICES.tm)       : ""}</td>
-          <td>${r.sMilkL ? r.sMilkL + " L @ ₹" + (r.sMilkPrice || BASE_PRICES.sMilk)    : ""}</td>
-          <td>${r.sCurdL ? r.sCurdL + " L @ ₹" + (r.sCurdPrice || BASE_PRICES.sCurd)    : ""}</td>
-          <td>${r.bCurdL ? r.bCurdL + " L @ ₹" + (r.bCurdPrice || BASE_PRICES.bCurd)    : ""}</td>
-          <td>${r.h500L  ? r.h500L  + " L @ ₹" + (r.h500Price  || BASE_PRICES.h500)     : ""}</td>
-          <td>${r.fmL    ? r.fmL    + " L @ ₹" + (r.fmPrice    || BASE_PRICES.fm)       : ""}</td>
-          <td>${r.fm1lL  ? r.fm1lL  + " L @ ₹" + (r.fm1lPrice  || BASE_PRICES.fm1l)     : ""}</td>
-          <td>${r.sm1lL  ? r.sm1lL  + " L @ ₹" + (r.sm1lPrice  || BASE_PRICES.sm1l)     : ""}</td>
+          <td>${r.tmL ? r.tmL + " L @ ₹" + (r.tmPrice || MASTER.tm) : ""}</td>
+          <td>${r.sMilkL ? r.sMilkL + " L @ ₹" + (r.sMilkPrice || MASTER.sMilk) : ""}</td>
+          <td>${r.sCurdL ? r.sCurdL + " L @ ₹" + (r.sCurdPrice || MASTER.sCurd) : ""}</td>
+          <td>${r.bCurdL ? r.bCurdL + " L @ ₹" + (r.bCurdPrice || MASTER.bCurd) : ""}</td>
+          <td>${r.h500L ? r.h500L + " L @ ₹" + (r.h500Price || MASTER.h500) : ""}</td>
+          <td>${r.fmL ? r.fmL + " L @ ₹" + (r.fmPrice || MASTER.fm) : ""}</td>
+          <td>${r.fm1lL ? r.fm1lL + " L @ ₹" + (r.fm1lPrice || MASTER.fm1l) : ""}</td>
+          <td>${r.sm1lL ? r.sm1lL + " L @ ₹" + (r.sm1lPrice || MASTER.sm1l) : ""}</td>
 
           <td>${totalLitres}</td>
           <td>₹${amount.toFixed(0)}</td>
@@ -489,13 +448,11 @@ head>
           </td>
         `;
       } else {
+        // in edit mode: show qty + per-customer price inputs + editable Paid field + show computed Due (read-only)
+        const totals = computeRowTotals(r);
         tr.innerHTML = `
-          <td class="nameCol">
-            <input id="name_${i}" value="${r.name || ''}" placeholder="Name">
-          </td>
-          <td class="mobileCol">
-            <input id="mobile_${i}" value="${r.mobile || ''}" placeholder="Mobile">
-          </td>
+          <td class="nameCol"><input id="name_${i}" value="${r.name || ''}" placeholder="Name"></td>
+          <td class="mobileCol"><input id="mobile_${i}" value="${r.mobile || ''}" placeholder="Mobile"></td>
 
           <td>
             <div class="cellStack">
@@ -569,13 +526,17 @@ head>
             </div>
           </td>
 
-          <td>${totalLitres}</td>
-          <td>₹${amount.toFixed(0)}</td>
+          <td>${totals.totalLitres}</td>
+          <td>₹${totals.amount.toFixed(0)}</td>
 
-          <td>₹${paid.toFixed(0)}</td>
+          <td>
+            <input id="paid_${i}" value="${r.paid || ''}" placeholder="Paid ₹">
+            <div style="font-size:11px;color:#666;">(Edit Paid)</div>
+          </td>
 
           <td class="dueCol">
-            <input id="due_${i}" value="${r.due || ''}" placeholder="Due ₹">
+            <input id="due_${i}" value="₹${totals.due.toFixed(0)}" readonly>
+            <div style="font-size:11px;color:#666;">Prev: ₹${totals.prevDue.toFixed(0)}</div>
           </td>
 
           <td class="no-print">
@@ -594,6 +555,7 @@ head>
       tbody.appendChild(tr);
     });
 
+    // totals UI
     document.getElementById("tTM").innerText  = tTM;
     document.getElementById("tSM").innerText  = tSM;
     document.getElementById("tSC").innerText  = tSC;
@@ -610,6 +572,7 @@ head>
     saveCurrentDate();
   }
 
+  // UI bindings
   document.getElementById("addRowBtn").addEventListener("click", addRow);
   document.getElementById("pdfBtn").addEventListener("click", () => window.print());
 
@@ -619,7 +582,35 @@ head>
     loadDate(val);
   });
 
+  // master save/reset
+  document.getElementById("saveMaster").addEventListener("click", () => {
+    const m = {
+      tm:   parseFloat(document.getElementById("master_tm").value)   || DEFAULT_MASTER.tm,
+      sMilk:parseFloat(document.getElementById("master_sMilk").value) || DEFAULT_MASTER.sMilk,
+      sCurd:parseFloat(document.getElementById("master_sCurd").value) || DEFAULT_MASTER.sCurd,
+      bCurd:parseFloat(document.getElementById("master_bCurd").value) || DEFAULT_MASTER.bCurd,
+      h500: parseFloat(document.getElementById("master_h500").value)  || DEFAULT_MASTER.h500,
+      fm:   parseFloat(document.getElementById("master_fm").value)   || DEFAULT_MASTER.fm,
+      fm1l: parseFloat(document.getElementById("master_fm1l").value) || DEFAULT_MASTER.fm1l,
+      sm1l: parseFloat(document.getElementById("master_sm1l").value) || DEFAULT_MASTER.sm1l
+    };
+    MASTER = m;
+    saveMaster(MASTER);
+    refreshMasterUI();
+    render(); // re-render so UI reflects new master price usage
+    alert("Master prices saved.");
+  });
+
+  document.getElementById("resetMaster").addEventListener("click", () => {
+    if (!confirm("Reset master prices to defaults?")) return;
+    MASTER = {...DEFAULT_MASTER};
+    saveMaster(MASTER);
+    refreshMasterUI();
+    render();
+  });
+
   (function init() {
+    // set date to today and load
     const d = new Date();
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -627,9 +618,12 @@ head>
     const today = `${yyyy}-${mm}-${dd}`;
     const dp = document.getElementById("datePicker");
     dp.value = today;
+    // refresh master UI (in case loaded earlier)
+    MASTER = loadMaster();
+    refreshMasterUI();
     loadDate(today);
   })();
-</script>
 
+</script>
 </body>
 </html>
